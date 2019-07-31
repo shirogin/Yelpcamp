@@ -17,11 +17,17 @@ const   commentRoutes       = require('./routes/comments'),
 
 const port = 8888
 
-mongoose.connect("mongodb://localhost:27017/yelp_camp_v12", {
+// mongoose.connect("mongodb://localhost:27017/yelp_camp_v12", {
+//     useNewUrlParser: true,
+//     useFindAndModify: false,
+//     useCreateIndex: true
+// })
+mongoose.connect("mongodb+srv://xenomshox:0561182132salma@xenomshox-q63xb.mongodb.net/yelp_camp_final?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useFindAndModify: false,
     useCreateIndex: true
 })
+//mongodb+srv://xenomshox:0561182132salma@xenomshox-q63xb.mongodb.net/test?retryWrites=true&w=majority
 
 app.set("view engine", "ejs")
 app.use(bodyParser.urlencoded({extended: true}))
@@ -55,6 +61,6 @@ app.use(commentRoutes)
 app.use(campgroundsRoutes)
 app.use(indexRoutes)
 
-app.listen(process.env.PORT ||port, () => {
+app.listen(process.env.PORT || port, () => {
 	console.log('Connected to YelpCamp PORT : ' + port)
 })
