@@ -17,3 +17,9 @@
 #comments_list{
     margin-bottom: 10px;
 }
+
+#map{
+    width: 100%;
+    height: 400px;
+    margin-top: 10px;
+}
