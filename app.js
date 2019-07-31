@@ -55,6 +55,6 @@ app.use(commentRoutes)
 app.use(campgroundsRoutes)
 app.use(indexRoutes)
 
-app.listen(port, () => {
+app.listen(process.env.PORT ||port, () => {
 	console.log('Connected to YelpCamp PORT : ' + port)
 })
