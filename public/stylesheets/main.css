@@ -1,0 +1,19 @@
+.img-thumbnail img{
+    width: 100%;
+}
+
+.img-thumbnail .caption-full{
+    padding: 9px;
+}
+
+#delete-form{
+    display: inline;
+}
+
+#comment{
+    text-indent: 2em;
+}
+
+#comments_list{
+    margin-bottom: 10px;
+}
