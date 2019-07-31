@@ -2,16 +2,6 @@ var express = require('express')
 var router = express.Router()
 var campground = require('../models/campground')
 var middleware = require('../middlewate')
-var NodeGeocoder = require('node-geocoder');
- 
-var options = {
-  provider: 'google',
-  httpAdapter: 'https',
-  apiKey: process.env.GEOCODER_API_KEY,
-  formatter: null
-};
- 
-var geocoder = NodeGeocoder(options);
 
 //==============
 //INDEX ROUTE
@@ -39,25 +29,20 @@ router.post('/campgrounds', middleware.isLoggedin, (req, res) => {
         id: req.user._id,
         username: req.user.username
     }
-    geocoder.geocode(req.body.location, (err, data)=>{
-        if (err || !data.length){
-            req.flash('error', 'Invalid address')
-            return res.redirect('back')
+    campground.create({
+        name: newname,
+        price: newPrice,
+        img: newimage,
+        description: newDescription,
+        author: newAuthor
+    }, (err, camp)=>{
+        if (err){
+            console.log(err)
+        }else{
+            console.log(camp)
+            res.redirect("/campgrounds")
         }
-        var lat = data[0].latitude
-        var lng = data[0].longitude
-        var location = data[0].formattedAddress
-        var newCampground = {name: newname, price: newPrice, img: newimage, description: newDescription, author: newAuthor, location: location, lat: lat, lng: lng}
-        campground.create(newCampground, (err, camp)=>{
-            if (err){
-                console.log(err)
-            }else{
-                console.log(camp)
-                res.redirect("/campgrounds")
-            }
-        })
     })
-
 })
 
 //NEW - show for to create new camground
@@ -89,25 +74,13 @@ router.get('/campgrounds/:id/edit', middleware.checkCamgroundOwnership, (req, re
 
 //UPDATE CAMPGROUND ROUTE
 router.put('/campgrounds/:id', middleware.checkCamgroundOwnership, (req, res)=>{
-    geocoder.geocode(req.body.location, (err, data)=>{
-        if (err || !data.length){
-            req.flash('error', 'Invalid address')
-            return res.redirect('back')
+    //find and update the correct campground
+    campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCamp)=>{
+        if (err){
+            res.redirect('/campgrounds')
+        }else{
+            res.redirect('/campgrounds/' + req.params.id)
         }
-        req.body.campground.lat = data[0].latitude
-        req.body.campground.lng = data[0].longitude
-        req.body.campground.location = data[0].formattedAddress
-
-        //find and update the correct campground
-        campground.findByIdAndUpdate(req.params.id, req.body.campground, (err, updatedCamp)=>{
-            if (err){
-                req.flash('error', 'err.message')
-                res.redirect('/campgrounds')
-            }else{
-                req.flash('success', 'Successfully Updated!')
-                res.redirect('/campgrounds/' + req.params.id)
-            }
-        })
     })
 })
 
