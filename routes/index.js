@@ -22,7 +22,7 @@ router.post('/register', (req, res)=>{
         if (err){
             console.log(err)
             req.flash("error", err.message)
-            return res.render('register')
+            return res.redirect('/register')
         }
         passport.authenticate('local')(req, res, ()=>{
             req.flash("success", "Welcome to YelpCamp " + user.username)
@@ -47,8 +47,9 @@ router.post('/login', passport.authenticate('local', {
 //Logout
 // logic Route
 router.get('/logout', (req, res)=>{
+    var username = req.user.username
     req.logout()
-    req.flash('success', 'Logged Out')
-    res.redirect('/campgrounds')
+    req.flash('success', 'See you soon ' + username)
+    res.redirect('/')
 })
 module.exports = router

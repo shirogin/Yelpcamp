@@ -7,7 +7,7 @@ var middleware = require('../middlewate')
 //INDEX ROUTE
 //==============
 
-router.get('/campgrounds', (req, res) => {
+router.get('/campgrounds', middleware.isLoggedin, (req, res) => {
     campground.find({}, (err, allcampgroudns)=>{
         if (err){
             console.log(err)
@@ -50,7 +50,7 @@ router.get('/campgrounds/new', middleware.isLoggedin, (req, res) => {
     res.render('campgrounds/new')
 })
 
-router.get('/campgrounds/:id', (req, res)=>{
+router.get('/campgrounds/:id', middleware.isLoggedin, (req, res)=>{
     campground.findById(req.params.id).populate('comments').exec((err, foundcamp)=>{
         if (err){
             console.log(err)

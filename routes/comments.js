@@ -18,7 +18,7 @@ router.get('/campgrounds/:id/comments/new', middleware.isLoggedin, (req, res)=>{
     })
 })
 
-router.post('/campgrounds/:id/comments', (req, res)=>{
+router.post('/campgrounds/:id/comments', middleware.isLoggedin, (req, res)=>{
     //lookup campground using ID
     campground.findById(req.params.id, (err, campground)=>{
         if (err){
