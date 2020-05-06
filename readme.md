@@ -24,4 +24,3 @@
 | NEW    | campgrounds/:id/comments/new |  GET |
 | CREATE |   campgrounds/:id/comments   | POST |
 
-**Testing requests**
